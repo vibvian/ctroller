@@ -10,7 +10,7 @@ static const struct uinput_user_dev gamepad = {
     .name = "Nintendo 3DS",
     .id =
         {
-            .vendor  = 0x057e,
+            .vendor  = 0x057f,
             .product = 0x0401,
             .version = 1,
             .bustype = BUS_VIRTUAL,
@@ -47,38 +47,44 @@ static const uint16_t keys[] = {
 
     BTN_START,
     BTN_SELECT,
-
+   
     BTN_TL,
     BTN_TR,
-
     BTN_TL2,
     BTN_TR2,
-
+    
+    
+    BTN_MODE,
+    BTN_THUMBL,
+    BTN_THUMBR,    
     BTN_DPAD_UP,
     BTN_DPAD_DOWN,
     BTN_DPAD_LEFT,
     BTN_DPAD_RIGHT,
 };
 
-static const uint32_t keymasks[] = {
-    HID_KEY_A,
+static const uint16_t keymasks[] = {
+    HID_KEY_A,   
     HID_KEY_B,
-    HID_KEY_X,
     HID_KEY_Y,
+    HID_KEY_X,
 
     HID_KEY_START,
     HID_KEY_SELECT,
 
     HID_KEY_L,
     HID_KEY_R,
-
     HID_KEY_ZL,
     HID_KEY_ZR,
+
+
 
     HID_KEY_DUP,
     HID_KEY_DDOWN,
     HID_KEY_DLEFT,
     HID_KEY_DRIGHT,
+
+
 };
 
 static const uint16_t axis[] = {
@@ -133,6 +139,7 @@ failure_noclose:
 
 int gamepad_write(int uinputfd, struct hidinfo *hid)
 {
+    int touch = HID_HAS_KEY(hid->keys.held, HID_KEY_TOUCH);
     int res;
     static struct input_event events[NUMEVENTS];
 
@@ -144,6 +151,13 @@ int gamepad_write(int uinputfd, struct hidinfo *hid)
             HID_HAS_KEY(hid->keys.held | hid->keys.down, keymasks[i]);
     }
 
+if (touch && hid->touchscreen.px < 160 && hid->touchscreen.py < 180)
+    events[14].value = 1;
+if (touch && hid->touchscreen.px > 159 && hid->touchscreen.py < 180)
+    events[15].value = 1;
+if (touch && hid->touchscreen.py > 179)
+    events[16].value = 1; 
+    
     events[i].type  = EV_ABS;
     events[i].code  = ABS_X;
     events[i].value = hid->circlepad.dx;
@@ -168,10 +182,12 @@ int gamepad_write(int uinputfd, struct hidinfo *hid)
     events[i].code  = SYN_REPORT;
     events[i].value = 0;
     i++;
+    
 
     res = write(uinputfd, events, i * sizeof(struct input_event));
     if (res < 0) {
         perror("Error writing key events");
     }
     return res;
+
 }

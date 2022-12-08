@@ -11,8 +11,8 @@ static const struct uinput_user_dev touchscreen = {
     .name = "Nintendo 3DS Touchscreen",
     .id =
         {
-            .vendor  = 0x057e,
-            .product = 0x0402,
+            .vendor  = 0x057f,
+            .product = 0x0401,
             .version = 1,
             .bustype = BUS_VIRTUAL,
         },
@@ -77,6 +77,7 @@ failure_noclose:
 
 int touchscreen_write(int uinputfd, struct hidinfo *hid)
 {
+    return 0;
     int res;
     static struct input_event events[NUMEVENTS];
 
