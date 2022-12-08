@@ -10,8 +10,8 @@ static const struct uinput_user_dev gamepad = {
     .name = "Nintendo 3DS",
     .id =
         {
-            .vendor  = 0x057f,
-            .product = 0x0401,
+            .vendor  = 0x057e,
+            .product = 0x0402,
             .version = 1,
             .bustype = BUS_VIRTUAL,
         },
