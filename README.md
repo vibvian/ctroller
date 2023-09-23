@@ -1,13 +1,3 @@
-# Deprecation notice
-
-This project is no longer maintained, as I have moved on to other projects.
-It might still work in an up to date homebrew environment but this is not
-guaranteed.  Feel free to fork the project and continue it according to its
-license, that's why its open source :)  I'll try answering any questions you
-might have, if my schedule allows for it.
-
-One day I might come back to `ctroller`.
-
 # ctroller
 
 *ctroller* lets you use your 3DS as an input device for your Linux system via
@@ -16,6 +6,8 @@ continously streaming the 3DS input data to a server on your PC. The server
 exposes a virtual device to your system, interpretes the data it receives and
 writes it to a event node under `/dev/input/event*` or similar.
 
+This fork of ctroller is modified to use the 3DS's touchscreen as an aditional
+set of buttons. Just like the original, it is no longer maintained.
 ## Prerequisites
 
 You will need
